@@ -21,6 +21,8 @@ public class Player implements GameObject {
 
     }
 
+    public Rect getRectange(){ return rectangle; }
+
     @Override
     public void draw(Canvas canvas) {
 

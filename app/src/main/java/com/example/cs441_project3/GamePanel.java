@@ -14,6 +14,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Player user;
     private Point userPoint;
+    private FruitManager fruitManager;
 
     public GamePanel(Context context){
 
@@ -26,6 +27,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         user = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
 
         userPoint = new Point(150,150);
+
+        fruitManager = new FruitManager(200, 200, 200, Color.BLACK);
 
         setFocusable(true);
 
@@ -91,6 +94,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         user.update(userPoint);
 
+        fruitManager.update();
+
     }
 
     @Override
@@ -101,6 +106,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.GRAY);
 
         user.draw(canvas);
+
+        fruitManager.draw(canvas);
 
     }
 
