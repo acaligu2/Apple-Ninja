@@ -32,15 +32,8 @@ public class Fruit implements GameObject{
 
     public boolean collisionDetection(Player player){
 
-        Rect cDetect = player.getRectangle();
+        return Rect.intersects(rectangle, player.getRectangle());
 
-        if(rectangle.contains(cDetect.left, cDetect.top) ||
-            rectangle.contains(cDetect.right, cDetect.top) ||
-            rectangle.contains(cDetect.left, cDetect.bottom) ||
-            rectangle.contains(cDetect.right, cDetect.bottom)){ return true; }
-
-
-        return false;
     }
 
     @Override

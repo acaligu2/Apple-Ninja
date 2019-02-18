@@ -3,6 +3,7 @@ package com.example.cs441_project3;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
@@ -16,19 +17,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Point userPoint;
     private FruitManager fruitManager;
 
+    private boolean gameOver = false;
+    private long gameOverTime;
+
     public GamePanel(Context context){
 
         super(context);
 
         getHolder().addCallback(this);
 
+        Constants.CURRENT_CONTEXT = context;
+
         thread = new MainThread(getHolder(), this);
 
         user = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
 
         userPoint = new Point(150,150);
+        user.update(userPoint);
 
-        fruitManager = new FruitManager(200, 200, 200, Color.BLACK);
+        fruitManager = new FruitManager(200, 200, 325, Color.argb(0,255,255,255));
 
         setFocusable(true);
 
@@ -74,13 +81,33 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    public void resetGame(){
+
+        userPoint = new Point(150,150);
+        user.update(userPoint);
+
+        fruitManager = new FruitManager(200, 200, 325, Color.argb(0,255,255,255));
+
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
         switch(event.getAction()){
 
             case MotionEvent.ACTION_DOWN:
+
+                if(gameOver && System.currentTimeMillis() - gameOverTime >= 3000){
+
+                    resetGame();
+                    gameOver = false;
+
+                }
+
+                break;
+
             case MotionEvent.ACTION_MOVE:
+
                 userPoint.set((int)event.getX(), (int)event.getY());
 
         }
@@ -92,9 +119,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(){
 
-        user.update(userPoint);
+        //gameOverTime = System.currentTimeMillis();
 
-        fruitManager.update();
+        if(!gameOver) {
+
+            user.update(userPoint);
+
+            fruitManager.update();
+
+            if(fruitManager.collisionDetection(user)){
+
+                System.out.println("Success");
+
+            }
+
+        }
 
     }
 
@@ -108,6 +147,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         user.draw(canvas);
 
         fruitManager.draw(canvas);
+
+        if(gameOver){
+
+            Paint p = new Paint();
+            p.setColor(Color.BLACK);
+            canvas.drawText("Game Over", 300, 400, p);
+
+        }
 
     }
 
