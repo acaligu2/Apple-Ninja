@@ -125,13 +125,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             user.update(userPoint);
 
-            fruitManager.update();
+            boolean x = fruitManager.update();
 
-            if(fruitManager.collisionDetection(user)){
+            if(x){
 
-                System.out.println("Success");
+                gameOver = true;
 
             }
+
+            fruitManager.collisionDetection(user);
+
+        }else{
+
+            System.out.println("Game over");
+            resetGame();
 
         }
 
@@ -152,7 +159,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             Paint p = new Paint();
             p.setColor(Color.BLACK);
-            canvas.drawText("Game Over", 300, 400, p);
+            p.setTextSize(150);
+            canvas.drawText("Game Over - Tap to Restart", 750, 800, p);
 
         }
 

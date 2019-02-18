@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.transition.Explode;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class FruitManager {
     private int color;
 
     private int score = 0;
+
+    private int misses = 0;
 
     private Random rand = new Random();
 
@@ -53,6 +56,9 @@ public class FruitManager {
             if(f.collisionDetection(player)){
 
                 score++;
+
+                fruits.remove(f);
+
                 return true;
 
             }
@@ -78,12 +84,12 @@ public class FruitManager {
 
     }
 
-    public void update(){
+    public boolean update(){
 
         int timeElapsed = (int)(System.currentTimeMillis() - start);
         start = System.currentTimeMillis();
 
-        float speed = (float)(Math.sqrt(1 + (start - initialization)/ 2000.0)) * Constants.SCREEN_HEIGHT / 10000.0f;
+        float speed = (float)(Math.sqrt(1 + (start - initialization)/ 1000.0)) * Constants.SCREEN_HEIGHT / 10000.0f;
 
         for(Fruit fruit : fruits){
 
@@ -92,13 +98,27 @@ public class FruitManager {
         }
 
         if(fruits.get(fruits.size()-1).getRectangle().top >= Constants.SCREEN_HEIGHT){
-            int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
-            fruits.add(0, new Fruit(fruitHeight, color, xStart,
-                    fruits.get(0).getRectangle().top - fruitHeight - fruitLocation,
-                    playerSize));
 
-            fruits.remove(fruits.size()-1);
+            misses++;
+
+            System.out.println(misses);
+
+            //Game Over
+            if(misses == 3){
+
+                return true;
+
+            }
+
+            fruits.remove(fruits.get(fruits.size()-1));
+
         }
+        int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
+        fruits.add(0, new Fruit(fruitHeight, color, xStart,
+                fruits.get(0).getRectangle().top - fruitHeight - fruitLocation,
+                playerSize));
+
+        return false;
 
     }
 
