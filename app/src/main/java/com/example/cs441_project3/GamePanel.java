@@ -87,6 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         user.update(userPoint);
 
         fruitManager = new FruitManager(200, 200, 325, Color.argb(0,255,255,255));
+
     }
 
     @Override
@@ -142,7 +143,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }else{
 
-            resetGame();
             gameOver = false;
 
         }

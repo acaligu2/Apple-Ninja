@@ -146,7 +146,10 @@ public class FruitManager {
         //Fruit has made it to the bottom of the screen, add a strike to the count
         if(fruits.get(fruits.size()-1).getRectangle().top >= Constants.SCREEN_HEIGHT){
 
-            misses++;
+
+            if(fruits.get(fruits.size()-1).getType() != 6) {
+                misses++;
+            }
 
             //Game Over
             if(misses == 3){ return true; }
@@ -212,6 +215,27 @@ public class FruitManager {
         p.setTextSize(100);
         p.setColor(Color.BLUE);
         canvas.drawText("Score: " + score, 50, 50 + p.descent() - p.ascent(), p);
+
+        //Number of misses
+        if(misses == 1) {
+            Paint p1 = new Paint();
+            p1.setTextSize(100);
+            p1.setFakeBoldText(true);
+            p1.setColor(Color.RED);
+            canvas.drawText("X", 50, 200 + p1.descent() - p1.ascent(), p1);
+        }else if(misses == 2){
+            Paint p1 = new Paint();
+            p1.setTextSize(100);
+            p1.setFakeBoldText(true);
+            p1.setColor(Color.RED);
+            canvas.drawText("X X", 50, 200 + p1.descent() - p1.ascent(), p1);
+        }else if(misses == 3){
+            Paint p1 = new Paint();
+            p1.setTextSize(100);
+            p1.setFakeBoldText(true);
+            p1.setColor(Color.RED);
+            canvas.drawText("X X X", 50, 200 + p1.descent() - p1.ascent(), p1);
+        }
 
     }
 }
