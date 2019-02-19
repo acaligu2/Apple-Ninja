@@ -5,31 +5,35 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.transition.Explode;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class FruitManager {
 
-    private ArrayList<Fruit> fruits;
+    //Used to assign images to the fruit rectangles
+    private static BitmapFactory bf = new BitmapFactory();
 
-    private int fruitLocation;
-    private int playerSize;
-    private int fruitHeight;
+    private static Bitmap FRUIT_IMAGE1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple1);
+    private static Bitmap FRUIT_IMAGE2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple2);
+    private static Bitmap FRUIT_IMAGE3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple3);
+    private static Bitmap FRUIT_IMAGE4 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple4);
+    private static Bitmap FRUIT_IMAGE5 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple5);
+    private static Bitmap FRUIT_IMAGE6 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple6);
+
+    private static Bitmap BOMB_IMAGE = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.android1);
+
+    private ArrayList<Fruit> fruits;  //Array of fruits currently on screen
+
+    private int fruitLocation;        //Location of falling fruit
+    private int playerSize;           //Size of the user's swipe space
+    private int fruitHeight;          //Height of the fruit rectangle
     private int color;
 
-    private int score = 0;
+    private int score = 0;            //Game score
 
-    private int misses = 0;
+    private int misses = 0;           //Number of fruit not sliced
 
     private Random rand = new Random();
-
-    private BitmapFactory bf = new BitmapFactory();
-    private Bitmap fruitImage2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple3);
-
 
     private long start;
     private long initialization;
@@ -45,21 +49,30 @@ public class FruitManager {
 
         start = initialization = System.currentTimeMillis();
 
+        //Add fruit to the array
         populateFruits();
 
     }
 
     public boolean collisionDetection(Player player){
 
+        //Check each fruit on screen for detection
         for(Fruit f : fruits){
 
             if(f.collisionDetection(player)){
 
-                score++;
+                //Game over, hit a bomb
+                if(f.getType() == 6){
 
+                    return true;
+
+                }
+
+                //Increment score
+                score += f.getScoreVal();
+
+                //Remove from the arraylist
                 fruits.remove(f);
-
-                return true;
 
             }
 
@@ -69,15 +82,45 @@ public class FruitManager {
 
     }
 
+    private int determineFruitType(){
+
+        int val = rand.nextInt(100 - 1) + 1;
+        int type = -1;
+
+        if(1 <= val && val <= 25){
+            type = 1;
+        }else if(25 < val && val <= 45) {
+            type = 2;
+        }else if(45 < val && val <= 60) {
+            type = 3;
+        }else if(60 < val && val <= 70) {
+            type = 4;
+        }else if(70 < val && val <= 80) {
+            type = 5;
+        }else if(80 < val && val <= 95) {
+            type = 6;
+        }else if(95 < val && val <= 100) {
+            type = 7;
+        }
+
+        return type;
+    }
+
     private void populateFruits(){
 
         int currentY = -5 * Constants.SCREEN_HEIGHT / 4;
 
         while(currentY < 0){
 
+            //Determine where horizontally to place the fruit
             int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
 
-            fruits.add(new Fruit(fruitHeight, color, xStart, currentY, playerSize));
+            //Determines which type of fruit is spawned
+
+            int type = determineFruitType();
+
+            //Add to the arraylist
+            fruits.add(new Fruit(fruitHeight, color, xStart, currentY, playerSize, type));
             currentY += fruitHeight + fruitLocation;
 
         }
@@ -89,34 +132,39 @@ public class FruitManager {
         int timeElapsed = (int)(System.currentTimeMillis() - start);
         start = System.currentTimeMillis();
 
+        //Determine fall speed of the fruit
+        //Value gets larger as the game progresses
         float speed = (float)(Math.sqrt(1 + (start - initialization)/ 1000.0)) * Constants.SCREEN_HEIGHT / 10000.0f;
 
+        //Add y value to each fruit on the screen
         for(Fruit fruit : fruits){
 
             fruit.addYVal(speed * timeElapsed);
 
         }
 
+        //Fruit has made it to the bottom of the screen, add a strike to the count
         if(fruits.get(fruits.size()-1).getRectangle().top >= Constants.SCREEN_HEIGHT){
 
             misses++;
 
-            System.out.println(misses);
-
             //Game Over
-            if(misses == 3){
+            if(misses == 3){ return true; }
 
-                return true;
-
-            }
-
+            //Remove from the array list
             fruits.remove(fruits.get(fruits.size()-1));
 
         }
+
+        //Add a new fruit to be spawned
+
+        int type = determineFruitType();
+
         int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
+
         fruits.add(0, new Fruit(fruitHeight, color, xStart,
                 fruits.get(0).getRectangle().top - fruitHeight - fruitLocation,
-                playerSize));
+                playerSize, type));
 
         return false;
 
@@ -124,13 +172,42 @@ public class FruitManager {
 
     public void draw(Canvas canvas){
 
+        Bitmap photo = null;
+
         for(Fruit fruit : fruits){
 
             fruit.draw(canvas);
-            canvas.drawBitmap(fruitImage2, null, fruit.getRectangle(), new Paint());
+
+            switch(fruit.getType()){
+
+                case 1:
+                    photo = FRUIT_IMAGE1;
+                    break;
+                case 2:
+                    photo = FRUIT_IMAGE2;
+                    break;
+                case 3:
+                    photo = FRUIT_IMAGE3;
+                    break;
+                case 4:
+                    photo = FRUIT_IMAGE4;
+                    break;
+                case 5:
+                    photo = FRUIT_IMAGE5;
+                    break;
+                case 6:
+                    photo = BOMB_IMAGE;
+                    break;
+                case 7:
+                    photo = FRUIT_IMAGE6;
+                    break;
+            }
+
+            canvas.drawBitmap(photo, null, fruit.getRectangle(), new Paint());
 
         }
 
+        //Represents score
         Paint p = new Paint();
         p.setTextSize(100);
         p.setColor(Color.BLUE);

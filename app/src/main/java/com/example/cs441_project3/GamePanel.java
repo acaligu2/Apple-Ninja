@@ -87,7 +87,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         user.update(userPoint);
 
         fruitManager = new FruitManager(200, 200, 325, Color.argb(0,255,255,255));
-
     }
 
     @Override
@@ -119,7 +118,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(){
 
-        //gameOverTime = System.currentTimeMillis();
+        gameOverTime = System.currentTimeMillis();
 
         if(!gameOver) {
 
@@ -133,12 +132,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             }
 
-            fruitManager.collisionDetection(user);
+            boolean y = fruitManager.collisionDetection(user);
+
+            if(y){
+
+                gameOver = true;
+
+            }
 
         }else{
 
-            System.out.println("Game over");
             resetGame();
+            gameOver = false;
 
         }
 
