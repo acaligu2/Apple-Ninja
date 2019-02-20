@@ -87,19 +87,19 @@ public class FruitManager {
         int val = rand.nextInt(100 - 1) + 1;
         int type = -1;
 
-        if(1 <= val && val <= 25){
+        if(1 <= val && val <= 30){
             type = 1;
-        }else if(25 < val && val <= 45) {
+        }else if(30 < val && val <= 60) {
             type = 2;
-        }else if(45 < val && val <= 60) {
+        }else if(60 < val && val <= 75) {
             type = 3;
-        }else if(60 < val && val <= 70) {
+        }else if(75 < val && val <= 85) {
             type = 4;
-        }else if(70 < val && val <= 80) {
+        }else if(85 < val && val <= 90) {
             type = 5;
-        }else if(80 < val && val <= 95) {
+        }else if(90 < val && val <= 99) {
             type = 6;
-        }else if(95 < val && val <= 100) {
+        }else if(val == 100) {
             type = 7;
         }
 
@@ -119,7 +119,7 @@ public class FruitManager {
 
             int type = determineFruitType();
 
-            //Add to the arraylist
+            //Add to the array list
             fruits.add(new Fruit(fruitHeight, color, xStart, currentY, playerSize, type));
             currentY += fruitHeight + fruitLocation;
 

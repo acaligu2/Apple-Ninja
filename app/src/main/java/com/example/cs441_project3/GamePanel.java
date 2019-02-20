@@ -30,7 +30,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         thread = new MainThread(getHolder(), this);
 
-        user = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
+        user = new Player(new Rect(100,100,200,200), Color.argb(0, 0, 0,0));
 
         userPoint = new Point(150,150);
         user.update(userPoint);
@@ -97,7 +97,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             case MotionEvent.ACTION_DOWN:
 
-                if(gameOver && System.currentTimeMillis() - gameOverTime >= 3000){
+                if(gameOver){
 
                     resetGame();
                     gameOver = false;
@@ -127,7 +127,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             boolean x = fruitManager.update();
 
-            if(x){
+            if (x) {
 
                 gameOver = true;
 
@@ -135,16 +135,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             boolean y = fruitManager.collisionDetection(user);
 
-            if(y){
+            if (y) {
 
                 gameOver = true;
 
             }
-
-        }else{
-
-            gameOver = false;
-
         }
 
     }
@@ -165,7 +160,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             Paint p = new Paint();
             p.setColor(Color.BLACK);
             p.setTextSize(150);
-            canvas.drawText("Game Over - Tap to Restart", 750, 800, p);
+            canvas.drawText("Game Over - Tap to Restart", 500, 800, p);
 
         }
 
