@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,6 +23,11 @@ public class FruitManager {
     private static Bitmap FRUIT_IMAGE6 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.apple6);
 
     private static Bitmap BOMB_IMAGE = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.android1);
+
+    private static MediaPlayer BOMB_NOISE = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.bomb);
+    private static MediaPlayer MISSED = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.missed);
+    private static MediaPlayer FRUIT1 = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.slice3);
+    private static MediaPlayer FRUIT2 = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.slice4);
 
     private ArrayList<Fruit> fruits;  //Array of fruits currently on screen
 
@@ -64,9 +71,16 @@ public class FruitManager {
                 //Game over, hit a bomb
                 if(f.getType() == 6){
 
+                    BOMB_NOISE.start();
                     return true;
 
                 }
+
+                //Determine a noise to play for slicing the fruit
+                int val = rand.nextInt(2 - 1) + 1;
+
+                if(val == 1){ FRUIT1.start(); }
+                else{ FRUIT2.start(); }
 
                 //Increment score
                 score += f.getScoreVal();
@@ -148,6 +162,8 @@ public class FruitManager {
 
 
             if(fruits.get(fruits.size()-1).getType() != 6) {
+
+                MISSED.start();
                 misses++;
             }
 

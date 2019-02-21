@@ -157,6 +157,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(gameOver){
 
+            
             Paint p = new Paint();
             p.setColor(Color.BLACK);
             p.setTextSize(150);
