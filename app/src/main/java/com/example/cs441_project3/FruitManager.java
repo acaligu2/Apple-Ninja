@@ -1,5 +1,6 @@
 package com.example.cs441_project3;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -229,8 +230,13 @@ public class FruitManager {
         //Represents score
         Paint p = new Paint();
         p.setTextSize(100);
-        p.setColor(Color.BLUE);
+        p.setColor(Color.BLACK);
         canvas.drawText("Score: " + score, 50, 50 + p.descent() - p.ascent(), p);
+
+        Paint pHigh = new Paint();
+        pHigh.setTextSize(100);
+        pHigh.setColor(Color.BLACK);
+        canvas.drawText("High Score: " + score, 50, 100 + pHigh.descent() - pHigh.ascent(), pHigh);
 
         //Number of misses
         if(misses == 1) {

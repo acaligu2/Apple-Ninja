@@ -1,6 +1,8 @@
 package com.example.cs441_project3;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +11,7 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ImageView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -18,7 +21,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private FruitManager fruitManager;
 
     private boolean gameOver = false;
-    private long gameOverTime;
 
     public GamePanel(Context context){
 
@@ -113,13 +115,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         return true;
-        //return super.onTouchEvent(event);
 
     }
 
     public void update(){
-
-        gameOverTime = System.currentTimeMillis();
 
         if(!gameOver) {
 
@@ -149,7 +148,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         super.draw(canvas);
 
-        canvas.drawColor(Color.GRAY);
+        canvas.drawColor(Color.rgb(232, 200,179));
 
         user.draw(canvas);
 
@@ -157,11 +156,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(gameOver){
 
-            
+            canvas.drawColor(Color.BLACK);
+
             Paint p = new Paint();
-            p.setColor(Color.BLACK);
+            p.setColor(Color.GREEN);
             p.setTextSize(150);
-            canvas.drawText("Game Over - Tap to Restart", 500, 800, p);
+            canvas.drawText("Game Over - Tap to Restart", 450, 800, p);
 
         }
 
