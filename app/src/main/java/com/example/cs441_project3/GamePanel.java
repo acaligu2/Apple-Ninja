@@ -32,11 +32,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         thread = new MainThread(getHolder(), this);
 
+        //Instantiate player
         user = new Player(new Rect(100,100,200,200), Color.argb(0, 0, 0,0));
 
+        //Instantiate location of the player
         userPoint = new Point(150,150);
         user.update(userPoint);
 
+        //Instantiate the fruit-managing class
         fruitManager = new FruitManager(200, 200, 325, Color.argb(0,255,255,255));
 
         setFocusable(true);
@@ -83,6 +86,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    //Creates a new fruitManager and resets the location of the user
     public void resetGame(){
 
         userPoint = new Point(150,150);
@@ -97,8 +101,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         switch(event.getAction()){
 
+            //User has tapped
             case MotionEvent.ACTION_DOWN:
 
+                //Reset the game if ended
                 if(gameOver){
 
                     resetGame();
@@ -108,6 +114,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
                 break;
 
+            //User has moved their finger, update the location of the rect
             case MotionEvent.ACTION_MOVE:
 
                 userPoint.set((int)event.getX(), (int)event.getY());
@@ -120,12 +127,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(){
 
+        //Game is continuing
         if(!gameOver) {
 
+            //Move the user to the new point
             user.update(userPoint);
 
+            //Update the fruitManager
             boolean x = fruitManager.update();
 
+            //Check if three fruits have been missed
             if (x) {
 
                 gameOver = true;
@@ -134,6 +145,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             boolean y = fruitManager.collisionDetection(user);
 
+            //Check if bomb has been hit
             if (y) {
 
                 gameOver = true;
@@ -154,6 +166,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         fruitManager.draw(canvas);
 
+        //Set gameover screen
         if(gameOver){
 
             canvas.drawColor(Color.BLACK);

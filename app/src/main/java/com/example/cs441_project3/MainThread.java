@@ -3,6 +3,8 @@ package com.example.cs441_project3;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+//Sets running FPS and manages mainThread operations
+
 public class MainThread extends Thread {
 
     public static final int MAXFPS = 30;

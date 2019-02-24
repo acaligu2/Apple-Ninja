@@ -6,11 +6,11 @@ import android.graphics.Rect;
 
 public class Fruit implements GameObject{
 
-    private Rect rectangle;
-    private int color;
-    private int scoreVal;
+    private Rect rectangle;        //Fruit object
+    private int color;             //Color used for instantiating rect object
+    private int scoreVal;          //Value associated to the type of fruit
 
-    private int fruitType; //Type of the fruit (1 - 7)
+    private int fruitType;         //Type of the fruit (1 - 7)
 
     public Fruit(int rectHeight, int color, int startX, int startY, int playerSize, int type){
 
@@ -20,6 +20,7 @@ public class Fruit implements GameObject{
 
         this.fruitType = type;
 
+        //Assigns scoreVal
         switch(type){
 
             //White Logo

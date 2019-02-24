@@ -25,6 +25,7 @@ public class FruitManager {
 
     private static Bitmap BOMB_IMAGE = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.android1);
 
+    //Instantiate sound clips
     private static MediaPlayer BOMB_NOISE = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.bomb);
     private static MediaPlayer MISSED = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.missed);
     private static MediaPlayer FRUIT1 = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.slice3);
@@ -97,6 +98,8 @@ public class FruitManager {
 
     }
 
+    //Assigns next falling fruit to a random type
+    //Based on percentage rarity
     private int determineFruitType(){
 
         int val = rand.nextInt(100 - 1) + 1;
@@ -123,6 +126,7 @@ public class FruitManager {
 
     private void populateFruits(){
 
+        //Starting Y position for the fruit
         int currentY = -5 * Constants.SCREEN_HEIGHT / 4;
 
         while(currentY < 0){
@@ -131,7 +135,6 @@ public class FruitManager {
             int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
 
             //Determines which type of fruit is spawned
-
             int type = determineFruitType();
 
             //Add to the array list
@@ -162,6 +165,7 @@ public class FruitManager {
         if(fruits.get(fruits.size()-1).getRectangle().top >= Constants.SCREEN_HEIGHT){
 
 
+            //Fruit isn't a bomb, mark a penalty
             if(fruits.get(fruits.size()-1).getType() != 6) {
 
                 MISSED.start();
@@ -177,7 +181,6 @@ public class FruitManager {
         }
 
         //Add a new fruit to be spawned
-
         int type = determineFruitType();
 
         int xStart = (int)(Math.random() * (Constants.SCREEN_WIDTH - playerSize));
@@ -198,6 +201,7 @@ public class FruitManager {
 
             fruit.draw(canvas);
 
+            //Assigns correct image to fruit based on type
             switch(fruit.getType()){
 
                 case 1:
@@ -232,11 +236,6 @@ public class FruitManager {
         p.setTextSize(100);
         p.setColor(Color.BLACK);
         canvas.drawText("Score: " + score, 50, 50 + p.descent() - p.ascent(), p);
-
-        Paint pHigh = new Paint();
-        pHigh.setTextSize(100);
-        pHigh.setColor(Color.BLACK);
-        canvas.drawText("High Score: " + score, 50, 100 + pHigh.descent() - pHigh.ascent(), pHigh);
 
         //Number of misses
         if(misses == 1) {

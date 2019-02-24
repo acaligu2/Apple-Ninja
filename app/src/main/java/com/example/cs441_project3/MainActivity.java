@@ -15,8 +15,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Set phone default to landscape
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        //Fullscreen view, no toolbar/snackbar
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -24,6 +26,7 @@ public class MainActivity extends Activity {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+        //Set size of screen in Constants Class
         Constants.SCREEN_WIDTH = metrics.widthPixels;
         Constants.SCREEN_HEIGHT = metrics.heightPixels;
 
