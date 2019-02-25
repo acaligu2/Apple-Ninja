@@ -1,6 +1,7 @@
 package com.example.cs441_project3;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +20,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Player user;
     private Point userPoint;
     private FruitManager fruitManager;
+
+    private int highScore = Constants.PREF.getInt("key", 0);
 
     private boolean gameOver = false;
 
@@ -169,12 +172,49 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         //Set gameover screen
         if(gameOver){
 
+            BitmapFactory bf = new BitmapFactory();
+
+            Bitmap gOverImg = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.gameover);
+
+            if(highScore < fruitManager.getScore()){
+
+                SharedPreferences.Editor editor = Constants.PREF.edit();
+                editor.putInt("key", fruitManager.getScore());
+                editor.commit();
+
+            }
+
             canvas.drawColor(Color.BLACK);
 
             Paint p = new Paint();
             p.setColor(Color.GREEN);
             p.setTextSize(150);
-            canvas.drawText("Game Over - Tap to Restart", 450, 800, p);
+
+            Rect img = new Rect(Constants.SCREEN_WIDTH/2 - 250,0,Constants.SCREEN_WIDTH/2 + 250,500);
+            canvas.drawBitmap(gOverImg, null, img, null);
+
+            Rect bounds = new Rect();
+
+            String text1 = "Game Over! Tap to Restart";
+            p.getTextBounds(text1, 0, text1.length(), bounds);
+            int x1 = (canvas.getWidth() / 2) - (bounds.width() / 2);
+            int y1 = (canvas.getHeight() / 2) - (bounds.height() / 2);
+
+            String text2 = "Score: " + fruitManager.getScore();
+            p.getTextBounds(text2, 0, text2.length(), bounds);
+            int x2 = (canvas.getWidth() / 2) - (bounds.width() / 2);
+            int y2 = (canvas.getHeight() / 2) - (bounds.height() / 2);
+
+            String text3 = "High Score: " + highScore;
+            p.getTextBounds(text3, 0, text3.length(), bounds);
+            int x3 = (canvas.getWidth() / 2) - (bounds.width() / 2);
+            int y3 = (canvas.getHeight() / 2) - (bounds.height() / 2);
+
+
+
+            canvas.drawText(text1, x1, y1, p);
+            canvas.drawText(text2, x2, y2 + 200, p);
+            canvas.drawText(text3, x3, y3 + 400, p);
 
         }
 

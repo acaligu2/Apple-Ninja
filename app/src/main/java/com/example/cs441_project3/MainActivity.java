@@ -1,6 +1,8 @@
 package com.example.cs441_project3;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.hardware.display.DisplayManager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,10 @@ public class MainActivity extends Activity {
         //Set size of screen in Constants Class
         Constants.SCREEN_WIDTH = metrics.widthPixels;
         Constants.SCREEN_HEIGHT = metrics.heightPixels;
+
+        SharedPreferences pref = this.getSharedPreferences("myPrefsKey", Context.MODE_PRIVATE);
+
+        Constants.PREF = pref;
 
         setContentView(new GamePanel(this));
 

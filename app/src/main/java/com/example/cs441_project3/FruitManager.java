@@ -40,6 +40,8 @@ public class FruitManager {
 
     private int score = 0;            //Game score
 
+    private int highScore = Constants.PREF.getInt("key", 0);
+
     private int misses = 0;           //Number of fruit not sliced
 
     private Random rand = new Random();
@@ -60,6 +62,12 @@ public class FruitManager {
 
         //Add fruit to the array
         populateFruits();
+
+    }
+
+    public int getScore(){
+
+        return score;
 
     }
 
@@ -236,6 +244,14 @@ public class FruitManager {
         p.setTextSize(100);
         p.setColor(Color.BLACK);
         canvas.drawText("Score: " + score, 50, 50 + p.descent() - p.ascent(), p);
+
+
+
+        Paint pH = new Paint();
+        pH.setTextSize(100);
+        pH.setColor(Color.BLACK);
+        canvas.drawText("High Score: " + highScore, Constants.SCREEN_WIDTH - 750, 50 + pH.descent() - pH.ascent(), pH);
+
 
         //Number of misses
         if(misses == 1) {
