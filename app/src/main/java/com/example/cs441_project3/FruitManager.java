@@ -123,9 +123,9 @@ public class FruitManager {
             type = 4;
         }else if(85 < val && val <= 90) {
             type = 5;
-        }else if(90 < val && val <= 99) {
+        }else if(90 < val && val <= 98) {
             type = 6;
-        }else if(val == 100) {
+        }else if(val == 100 || val == 99) {
             type = 7;
         }
 

@@ -182,6 +182,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 editor.putInt("key", fruitManager.getScore());
                 editor.commit();
 
+                highScore = fruitManager.getScore();
+
             }
 
             canvas.drawColor(Color.BLACK);
